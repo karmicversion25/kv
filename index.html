@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karmic Version - Indian World Music Band</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .navbar-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: font-size 0.3s ease; /* Smooth transition for font size change */
+        }
+
+        .hero-text {
+            font-size: 4rem;
+            text-align: center;
+            color: #fff;
+            padding: 100px 20px;
+            transition: font-size 0.3s ease; /* Smooth transition for font size change */
+        }
+
+        /* Add specific styles for the button */
+        .upcoming-gigs-btn {
+            font-size: 1.2rem;
+            color: #000;
+            text-decoration: none;
+            background: #ffcc00;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .upcoming-gigs-btn:hover {
+            background-color: #ffcc00; /* Matching the yellow hover color in index.html */
+            color: #fff; /* Change text color to black on hover */
+        }
+
+        .navbar-menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-menu a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .navbar-menu a:hover {
+            color: #ffcc00;
+        }
+
+        .burger-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .burger-btn div {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+        }
+
+        .menu-active {
+            display: flex !important;
+            flex-direction: column;
+            position: absolute;
+            top: 60px; /* Directly below the navbar */
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px 0;
+            z-index: 999;
+            max-height: calc(100vh - 60px); /* Makes the menu take full screen height excluding navbar height */
+            overflow-y: auto; /* Makes the menu scrollable */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .menu-active.show {
+            transform: translateY(0); /* Shows the menu */
+        }
+
+        .menu-active a {
+            margin: 10px 0;
+            font-size: 1.2rem;
+            padding: 10px;
+            text-align: center;
+        }
+
+        header {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+        }
+
+        header video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        header h2 {
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+
+        header a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #ffcc00;
+            color: #000;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .members {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .member {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: left;
+            transition: transform 0.3s;
+        }
+
+        .member img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .member:hover {
+            transform: scale(1.05);
+        }
+
+        .member h3 {
+            margin: 15px 0;
+        }
+
+        .member .social {
+            margin-top: 10px;
+        }
+
+        .member .social a {
+            margin-right: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .member .social a img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .gigs {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 20px;
+            justify-content: flex-start;
+            flex-wrap: nowrap;
+        }
+
+        .gig {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 300px;
+            flex: 0 0 auto;
+            text-align: left;
+        }
+
+        .gig h3 {
+            margin: 0 0 10px;
+        }
+
+        footer {
+            background: #111;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .social-links {
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            margin: 0 10px;
+            display: inline-block;
+        }
+
+        .social-links a img {
+            width: 24px;
+            height: 24px;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-menu {
+                display: none;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .burger-btn {
+                display: flex;
+            }
+
+            .navbar-menu.menu-active {
+                display: flex;
+                transform: translateY(0);
+            }
+
+            .members {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar-logo {
+                font-size: 1.4rem; /* Reduced logo size on smaller screens */
+            }
+
+            .hero-text {
+                font-size: 2.5rem; /* Smaller font size on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="navbar-logo" onclick="window.location.href='index.html';">Karmic Version</div>
+    <div class="burger-btn" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="navbar-menu">
+        <a href="#gigs" onclick="closeMenu()">Gigs</a>
+        <a href="#members" onclick="closeMenu()">Members</a>
+        <a href="photos.html" onclick="closeMenu()">Photos</a>
+        <a href="videos.html" onclick="closeMenu()">Videos</a>
+        <a href="mailto:karmicversion@gmail.com?subject=Contact%20Us&body=Your%20message%20here" class="contact-btn" onclick="closeMenu()">Contact Us</a>
+    </div>
+</div>
+
+<header>
+    <video autoplay muted loop>
+        <source src="hero-video.mp4" type="video/mp4">
+    </video>
+    <div class="hero-text">
+        <h1>Welcome to Karmic Version</h1>
+        <h2>Experience the Magic of Indian World Music</h2>
+        <a href="#gigs" class="upcoming-gigs-btn">Upcoming Gigs</a>
+    </div>
+
+</header>
+
+<section id="gigs">
+    <h2 class="section-title">Upcoming Gigs</h2>
+    <div class="gigs" id="gigs-container">
+        <!-- Gigs will be dynamically loaded here -->
+    </div>
+</section>
+
+<section id="members">
+    <h2 class="section-title">Band Members</h2>
+    <div class="members">
+        <div class="member">
+            <img src="vocal1.jpg" alt="Vocalist 1">
+            <h3>Sharad</h3>
+            <p>Known for his soulful voice and dynamic stage presence.</p>
+            <div class="social">
+                <a href="https://youtube.com/vocalist1" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/vocalist1" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="member">
+            <img src="vocal2.jpg" alt="Vocalist 2">
+            <h3>Vani</h3>
+            <p>Expert in classical Indian ragas blended with modern styles.</p>
+            <div class="social">
+                <a href="https://youtube.com/vocalist2" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/vocalist2" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="member">
+            <img src="vocal3.jpg" alt="Vocalist 3">
+            <h3>Deepak</h3>
+            <p>Renowned for his captivating voice and unmatched ability to ignite every crowd!</p>
+            <div class="social">
+                <a href="https://youtube.com/vocalist3" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/vocalist3" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="member">
+            <img src="guitar1.jpg" alt="Guitarist 1">
+            <h3>Sunil</h3>
+            <p>Master of soulful solos and energetic riffs.</p>
+            <div class="social">
+                <a href="https://youtube.com/guitarist1" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/guitarist1" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="member">
+            <img src="guitar2.jpg" alt="Guitarist 2">
+            <h3>Anoop</h3>
+            <p>Combining technical prowess with emotional depth.</p>
+            <div class="social">
+                <a href="https://youtube.com/guitarist2" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/guitarist2" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="member">
+            <img src="key.jpg" alt="Keyboard Player">
+            <h3>Karthik</h3>
+            <p>Weaving rich harmonies and textures into every performance.</p>
+            <div class="social">
+                <a href="https://youtube.com/keyboard" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/keyboard" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="member">
+            <img src="electro.jpg" alt="Electro & Midi Specialist">
+            <h3>Mithun</h3>
+            <p>Creating futuristic sounds with cutting-edge technology.</p>
+            <div class="social">
+                <a href="https://youtube.com/electro" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/electro" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="member">
+            <img src="drum.jpg" alt="Drummer">
+            <h3>Abhijeet</h3>
+            <p>The heartbeat of the band, bringing power and precision.</p>
+            <div class="social">
+                <a href="https://youtube.com/drummer" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/drummer" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="member">
+            <img src="bass.jpg" alt="Bassist">
+            <h3>Umar</h3>
+            <p>Providing groove and depth to every track.</p>
+            <div class="social">
+                <a href="https://youtube.com/bassist" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/bassist" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="member">
+            <img src="bass1.jpg" alt="Bass1">
+            <h3>Raghu</h3>
+            <p>Laying down the foundation with groove and soul in every note.</p>
+            <div class="social">
+                <a href="https://youtube.com/bass1" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/bass1" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+        <div class="member">
+            <img src="sound.jpg" alt="Sound">
+            <h3>Tony</h3>
+            <p>Crafting sonic perfection with precision and soul in every track.</p>
+            <div class="social">
+                <a href="https://youtube.com/sound" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+                <a href="https://instagram.com/sound" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+            </div>
+        </div>
+<!--        <div class="member">-->
+<!--            <img src="percussion.jpg" alt="Percussion">-->
+<!--            <h3>Renjith</h3>-->
+<!--            <p>Bringing rhythm to life with every beat and groove.</p>-->
+<!--            <div class="social">-->
+<!--                <a href="https://youtube.com/percussion" target="_blank"><img src="youtube.png" alt="YouTube"></a>-->
+<!--                <a href="https://instagram.com/percussion" target="_blank"><img src="instagram.png" alt="Instagram"></a>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+</section>
+
+<footer>
+    <div class="social-links">
+        <a href="https://www.facebook.com/KarmicVersion" target="_blank"><img src="facebook.png" alt="Facebook"></a>
+        <a href="https://www.instagram.com/karmicversion/" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+        <a href="https://www.youtube.com/@karmicversion8808" target="_blank"><img src="youtube.png" alt="YouTube"></a>
+    </div>
+    <p>&copy; 2025 Karmic Version. All rights reserved.</p>
+</footer>
+
+<script>
+  // URL of your SheetDB API
+  const sheetDbApiUrl = 'https://sheetdb.io/api/v1/3ywrm2zmqqel3';
+
+  // Fetch the data from SheetDB
+  fetch(sheetDbApiUrl)
+    .then(response => response.json())
+    .then(data => {
+        const gigsContainer = document.querySelector('.gigs');
+        data.forEach(gig => {
+            const gigElement = document.createElement('div');
+            gigElement.classList.add('gig');
+            gigElement.innerHTML = `
+                <h3>${gig.name}</h3>
+                <p>Date: ${gig.date}</p>
+                <p>Location: ${gig.location}</p>
+            `;
+            gigsContainer.appendChild(gigElement);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching the gig data:', error);
+    });
+
+  // Toggle the menu
+  function toggleMenu() {
+    const menu = document.querySelector('.navbar-menu');
+    menu.classList.toggle('menu-active');
+    menu.classList.toggle('show'); // Added show class for proper animation
+  }
+
+  // Close the menu when a link is clicked
+  function closeMenu() {
+    const menu = document.querySelector('.navbar-menu');
+    menu.classList.remove('menu-active');
+    menu.classList.remove('show');
+  }
+</script>
+
+</body>
+</html>
